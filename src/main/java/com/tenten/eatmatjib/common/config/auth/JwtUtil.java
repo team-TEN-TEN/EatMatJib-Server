@@ -40,12 +40,12 @@ public class JwtUtil {
 
     public JwtToken createToken(Member member) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("account", member.getAccount());
+        claims.put("id", member.getId());
 
         Instant now = Instant.now();
 
         String accessToken = Jwts.builder()
-                .subject(member.getAccount())
+                .subject(member.getId())
                 .claims(claims)
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plusSeconds(accessTokenExpTime)))
@@ -80,8 +80,8 @@ public class JwtUtil {
         return false;
     }
 
-    public String getMemberAccount(String token) {
-        return parseClaims(token).get("account", String.class);
+    public String getMemberId(String token) {
+        return parseClaims(token).get("id", String.class);
     }
 
     public Claims parseClaims(String token) {
