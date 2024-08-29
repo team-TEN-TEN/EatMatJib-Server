@@ -3,7 +3,6 @@ package com.tenten.eatmatjib.member.controller;
 import static com.tenten.eatmatjib.common.exception.ErrorCode.ACCOUNT_CONFLICT;
 import static com.tenten.eatmatjib.common.exception.ErrorCode.ACCOUNT_UNAUTHORIZED;
 import static com.tenten.eatmatjib.common.exception.ErrorCode.PASSWORD_UNAUTHORIZED;
-import static com.tenten.eatmatjib.common.exception.ErrorCode.PRE_MEMBER_FORBIDDEN;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -22,7 +21,6 @@ import com.tenten.eatmatjib.member.controller.request.RegisterMemberReq;
 import com.tenten.eatmatjib.member.controller.response.LoginMemberRes;
 import com.tenten.eatmatjib.member.controller.response.RegisterMemberRes;
 import com.tenten.eatmatjib.member.domain.Member;
-import com.tenten.eatmatjib.member.domain.MemberRole;
 import com.tenten.eatmatjib.member.service.MemberLoginService;
 import com.tenten.eatmatjib.member.service.MemberRegisterService;
 import java.time.LocalDateTime;
@@ -169,28 +167,6 @@ class MemberControllerTest {
             .andExpect(jsonPath("$.message").value("비밀번호를 잘못 입력했습니다."));
     }
 
-    @DisplayName("이메일 인증을 하지 않은 사용자가 로그인을 하면 403을 반환한다.")
-    @Test
-    void preMemberForbiddenLoginReturn403() throws Exception {
-        // given
-        LoginMemberReq request = getLoginMemberReq();
-
-        when(memberLoginService.execute(any())).thenThrow(
-            new BusinessException(PRE_MEMBER_FORBIDDEN)
-        );
-
-        // when
-        ResultActions resultActions = mockMvc.perform(
-            post("/api/v1/members/login")
-                .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        );
-
-        // then
-        resultActions.andExpect(status().isForbidden())
-            .andExpect(jsonPath("$.message").value("서비스 회원이 아닙니다. 이메일 인증을 먼저 해주세요."));
-    }
-
     private RegisterMemberReq getRegisterMemberReq() {
         return RegisterMemberReq.builder()
             .account("tenten")
@@ -211,7 +187,6 @@ class MemberControllerTest {
             .account("tenten")
             .email("tenten@gmail.com")
             .password("password12!")
-            .role(MemberRole.PRE_MEMBER)
             .joinedAt(LocalDateTime.now())
             .build();
     }

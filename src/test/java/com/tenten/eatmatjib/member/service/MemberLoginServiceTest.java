@@ -2,7 +2,6 @@ package com.tenten.eatmatjib.member.service;
 
 import static com.tenten.eatmatjib.common.exception.ErrorCode.ACCOUNT_UNAUTHORIZED;
 import static com.tenten.eatmatjib.common.exception.ErrorCode.PASSWORD_UNAUTHORIZED;
-import static com.tenten.eatmatjib.common.exception.ErrorCode.PRE_MEMBER_FORBIDDEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -14,7 +13,6 @@ import com.tenten.eatmatjib.common.exception.BusinessException;
 import com.tenten.eatmatjib.member.controller.request.LoginMemberReq;
 import com.tenten.eatmatjib.member.controller.response.LoginMemberRes;
 import com.tenten.eatmatjib.member.domain.Member;
-import com.tenten.eatmatjib.member.domain.MemberRole;
 import com.tenten.eatmatjib.member.repository.MemberRepository;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -100,24 +98,6 @@ class MemberLoginServiceTest {
         assertThat(exception.getErrorCode()).isEqualTo(PASSWORD_UNAUTHORIZED);
     }
 
-    @DisplayName("이메일 인증을 하지 않은 사용자가 로그인을 하면 예외가 발생한다.")
-    @Test
-    void preMemberForbiddenLoginThrowsException() {
-        // given
-        LoginMemberReq request = getLoginMemberReq();
-
-        when(memberRepository.findByAccount(any())).thenReturn(Optional.ofNullable(getPreMember()));
-        when(passwordEncoder.matches(any(), any())).thenReturn(true);
-
-        // when
-        BusinessException exception = assertThrows(BusinessException.class,
-            () -> memberLoginService.execute(request)
-        );
-
-        // then
-        assertThat(exception.getErrorCode()).isEqualTo(PRE_MEMBER_FORBIDDEN);
-    }
-
     private LoginMemberReq getLoginMemberReq() {
         return LoginMemberReq.builder()
             .account("tenten")
@@ -130,7 +110,6 @@ class MemberLoginServiceTest {
             .account("tenten")
             .email("tenten@gmail.com")
             .password("password12!")
-            .role(MemberRole.MEMBER)
             .joinedAt(LocalDateTime.now())
             .build();
     }
@@ -140,7 +119,6 @@ class MemberLoginServiceTest {
             .account("tenten2")
             .email("tenten2@gmail.com")
             .password("password12!")
-            .role(MemberRole.PRE_MEMBER)
             .joinedAt(LocalDateTime.now())
             .build();
     }

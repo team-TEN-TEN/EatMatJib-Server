@@ -11,8 +11,6 @@ import com.tenten.eatmatjib.member.controller.request.RegisterMemberReq;
 import com.tenten.eatmatjib.member.controller.response.RegisterMemberRes;
 import com.tenten.eatmatjib.member.domain.Member;
 import com.tenten.eatmatjib.member.repository.MemberRepository;
-import com.tenten.eatmatjib.verification.domain.VerificationCode;
-import com.tenten.eatmatjib.verification.repository.VerificationCodeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,9 +26,6 @@ class MemberRegisterServiceTest {
     @Mock
     private MemberRepository memberRepository;
 
-    @Mock
-    private VerificationCodeRepository verificationCodeRepository;
-
     @Spy
     private PasswordEncoder passwordEncoder;
 
@@ -43,11 +38,9 @@ class MemberRegisterServiceTest {
         // given
         RegisterMemberReq request = getRegisterMemberReq();
         Member member = request.toMember(passwordEncoder.encode(request.getPassword()));
-        VerificationCode verificationCode = VerificationCode.create(member);
 
         when(memberRepository.existsByAccount(any())).thenReturn(false);
         when(memberRepository.save(any())).thenReturn(member);
-        when(verificationCodeRepository.save(any())).thenReturn(verificationCode);
 
         // when
         RegisterMemberRes result = memberRegisterService.execute(request);
