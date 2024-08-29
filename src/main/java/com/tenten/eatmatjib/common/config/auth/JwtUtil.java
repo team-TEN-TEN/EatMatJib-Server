@@ -45,7 +45,7 @@ public class JwtUtil {
         Instant now = Instant.now();
 
         String accessToken = Jwts.builder()
-                .subject(member.getId())
+                .subject(String.valueOf(member.getId()))
                 .claims(claims)
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plusSeconds(accessTokenExpTime)))
