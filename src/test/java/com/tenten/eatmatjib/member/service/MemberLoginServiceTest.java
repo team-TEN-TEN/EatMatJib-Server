@@ -108,7 +108,6 @@ class MemberLoginServiceTest {
     private Member getMember() {
         return Member.builder()
             .account("tenten")
-            .email("tenten@gmail.com")
             .password("password12!")
             .joinedAt(LocalDateTime.now())
             .build();
@@ -117,7 +116,6 @@ class MemberLoginServiceTest {
     private Member getPreMember() {
         return Member.builder()
             .account("tenten2")
-            .email("tenten2@gmail.com")
             .password("password12!")
             .joinedAt(LocalDateTime.now())
             .build();
