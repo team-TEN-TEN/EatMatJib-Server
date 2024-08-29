@@ -50,9 +50,10 @@ public class Member {
     ) {
         this.account = account;
         this.password = password;
-        this.x = x;
-        this.y = y;
-        this.isRecommendationActive = isRecommendationActive;
+        this.x = (x != null) ? x : BigDecimal.ZERO;
+        this.y = (y != null) ? y : BigDecimal.ZERO;
+        this.isRecommendationActive =
+            (isRecommendationActive != null) ? isRecommendationActive : true;
         this.joinedAt = joinedAt;
     }
 }
