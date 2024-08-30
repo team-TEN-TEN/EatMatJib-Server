@@ -170,7 +170,6 @@ class MemberControllerTest {
     private RegisterMemberReq getRegisterMemberReq() {
         return RegisterMemberReq.builder()
             .account("tenten")
-            .email("tenten@gmail.com")
             .password("password12!")
             .build();
     }
@@ -185,7 +184,6 @@ class MemberControllerTest {
     private Member getMember() {
         return Member.builder()
             .account("tenten")
-            .email("tenten@gmail.com")
             .password("password12!")
             .joinedAt(LocalDateTime.now())
             .build();

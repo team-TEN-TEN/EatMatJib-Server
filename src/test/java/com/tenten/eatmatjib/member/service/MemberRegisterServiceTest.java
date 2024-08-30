@@ -69,7 +69,6 @@ class MemberRegisterServiceTest {
     private RegisterMemberReq getRegisterMemberReq() {
         return RegisterMemberReq.builder()
             .account("tenten")
-            .email("tenten@gmail.com")
             .password("password12!")
             .build();
     }
