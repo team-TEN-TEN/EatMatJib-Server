@@ -26,6 +26,11 @@ public enum ErrorCode {
     INVALID_TOKEN_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
 
     /**
+     * 404 Not Found
+     */
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 멤버입니다."),
+
+    /**
      * 409 - Conflict
      */
     ACCOUNT_CONFLICT(HttpStatus.CONFLICT, "이미 사용중인 계정입니다."),
