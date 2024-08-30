@@ -27,10 +27,8 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
     private BigDecimal x;
 
-    @Column(nullable = false)
     private BigDecimal y;
 
     @Column(nullable = false)
@@ -50,8 +48,8 @@ public class Member {
     ) {
         this.account = account;
         this.password = password;
-        this.x = (x != null) ? x : BigDecimal.ZERO;
-        this.y = (y != null) ? y : BigDecimal.ZERO;
+        this.x = x;
+        this.y = y;
         this.isRecommendationActive =
             (isRecommendationActive != null) ? isRecommendationActive : true;
         this.joinedAt = joinedAt;
