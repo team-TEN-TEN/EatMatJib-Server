@@ -66,6 +66,7 @@ public class Restaurant {
     public Restaurant(Long id, String name, String zipCode, String address, String cuisine,
         BigDecimal x, BigDecimal y, String phoneNumber, String homepageUrl,
         BigDecimal avgScore, int viewCount, LocalDateTime updatedAt) {
+        this.id = id;
         this.name = name;
         this.zipCode = zipCode;
         this.address = address;
@@ -79,8 +80,9 @@ public class Restaurant {
         this.updatedAt = updatedAt;
     }
 
-    public void addReview(Review review) {
+    public void addReview (Review review) {
         this.reviews.add(review);
-        review.updateRestaurant(this);
     }
+
+
 }

@@ -38,6 +38,7 @@ class RestaurantQueryServiceTest {
 
     // 음식점 엔티티 생성
     restaurant = Restaurant.builder()
+        .id(1L)
         .name("맛집")
         .zipCode("12345")
         .address("서울시 강남구")
@@ -76,15 +77,17 @@ class RestaurantQueryServiceTest {
         .restaurant(restaurant)
         .build();
 
-    // 음식점에 리뷰 추가 (리뷰가 최신순으로 정렬된 상태여야 함)
     restaurant.addReview(review1);
     restaurant.addReview(review2);
+
+
   }
 
   @Test
   void getRestaurantDetail_whenRestaurantExists_thenReturnRestaurantWithReviewsInDescendingOrder() {
     // given
     Long restaurantId = 1L;
+
     when(restaurantRepository.findById(restaurantId)).thenReturn(Optional.of(restaurant));
 
     // when
