@@ -1,5 +1,7 @@
 package com.tenten.eatmatjib.review.service;
 
+import com.tenten.eatmatjib.common.exception.BusinessException;
+import com.tenten.eatmatjib.common.exception.ErrorCode;
 import com.tenten.eatmatjib.member.domain.Member;
 import com.tenten.eatmatjib.member.repository.MemberRepository;
 import com.tenten.eatmatjib.restaurant.domain.Restaurant;
@@ -22,11 +24,11 @@ public class AddReviewService {
   public void addReviewAndUpdateRating(ReviewRequest reviewRequest) {
     // 음식점 조회
     Restaurant restaurant = restaurantRepository.findById(reviewRequest.getRestaurantId())
-        .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+        .orElseThrow(() -> new BusinessException(ErrorCode.RESTAURANT_NOT_FOUNT));
 
     // 멤버 조회
     Member member = memberRepository.findById(reviewRequest.getMemberId())
-        .orElseThrow(() -> new RuntimeException("Member not found"));
+        .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
     // 리뷰 생성
     Review review = Review.builder()

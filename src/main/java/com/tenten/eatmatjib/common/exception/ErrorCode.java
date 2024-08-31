@@ -25,6 +25,8 @@ public enum ErrorCode {
     LOGIN_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "로그인을 먼저 해주세요."),
     INVALID_TOKEN_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
 
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "멤버가 존재하지 않습니다"),
+    RESTAURANT_NOT_FOUNT(HttpStatus.NOT_FOUND, "음식점이 존재하지 않습니다"),
     /**
      * 409 - Conflict
      */
