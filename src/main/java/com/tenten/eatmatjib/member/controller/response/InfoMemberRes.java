@@ -1,9 +1,10 @@
 package com.tenten.eatmatjib.member.controller.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tenten.eatmatjib.member.domain.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -27,8 +28,9 @@ public class InfoMemberRes {
     @Schema(description = "사용자 점심 추천 기능 사용 여부", example = "true")
     private Boolean isRecommendationActive;
 
-    @Schema(description = "사용자 가입 날짜")
-    private LocalDateTime joinedAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @Schema(description = "사용자 가입 날짜", example = "2024-08-31")
+    private LocalDate joinedAt;
 
     public static InfoMemberRes of(Member member) {
         return InfoMemberRes.builder()
@@ -37,7 +39,7 @@ public class InfoMemberRes {
             .x(member.getX())
             .y(member.getY())
             .isRecommendationActive(member.getIsRecommendationActive())
-            .joinedAt(member.getJoinedAt())
+            .joinedAt(LocalDate.from(member.getJoinedAt()))
             .build();
     }
 }
