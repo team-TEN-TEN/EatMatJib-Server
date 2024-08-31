@@ -51,4 +51,8 @@ public class Restaurant {
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    public void updateAvgScore(BigDecimal avgScore) {
+        this.avgScore = avgScore;
+    }
 }
