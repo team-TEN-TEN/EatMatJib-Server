@@ -10,8 +10,8 @@ import lombok.Getter;
 @Builder
 public class RegisterMemberRes {
 
-    @Schema(description = "사용자 id", example = "uuid")
-    private String memberId;
+    @Schema(description = "사용자 id", example = "1")
+    private Long memberId;
 
     public static RegisterMemberRes of(Member member) {
         return RegisterMemberRes.builder()
