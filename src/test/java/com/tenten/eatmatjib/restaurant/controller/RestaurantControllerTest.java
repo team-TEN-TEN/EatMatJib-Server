@@ -7,6 +7,7 @@ import com.tenten.eatmatjib.restaurant.domain.Restaurant;
 import com.tenten.eatmatjib.restaurant.service.RestaurantQueryService;
 import com.tenten.eatmatjib.review.domain.Review;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -44,7 +45,7 @@ class RestaurantControllerTest {
         .build();
   }
 
-
+  @DisplayName("restaurantId가 존재하는 경우 200과 함께 음식점 상세 정보를 반환한다.")
   @Test
   void getRestaurantDetail_whenRestaurantExists_thenReturnRestaurantWithReviews() throws Exception {
     // given
@@ -91,15 +92,15 @@ class RestaurantControllerTest {
         .andExpect(jsonPath("$.reviews[1].content").value("Nice ambiance."));
   }
 
-//  @Test
-//  void getRestaurantDetail_whenRestaurantDoesNotExist_thenReturn404() throws Exception {
-//    // given
-//    Long restaurantId = 1L;
-//    when(restaurantQueryService.getRestaurantDetail(restaurantId)).thenThrow(new IllegalArgumentException("해당 음식점이 존재하지 않습니다."));
-//
-//    // when & then
-//    mockMvc.perform(get("/api/v1/restaurants/{id}/detail", restaurantId)
-//            .contentType(MediaType.APPLICATION_JSON))
-//        .andExpect(status().isNotFound());
-//  }
+  @Test
+  void getRestaurantDetail_whenRestaurantDoesNotExist_thenReturn404() throws Exception {
+    // given
+    Long restaurantId = 1L;
+    when(restaurantQueryService.getRestaurantDetail(restaurantId)).thenThrow(new IllegalArgumentException("해당 음식점이 존재하지 않습니다."));
+
+    // when & then
+    mockMvc.perform(get("/api/v1/restaurants/{id}/detail", restaurantId)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound());
+  }
 }
