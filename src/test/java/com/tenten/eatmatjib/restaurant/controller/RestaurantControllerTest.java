@@ -2,6 +2,8 @@ package com.tenten.eatmatjib.restaurant.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tenten.eatmatjib.common.exception.BusinessException;
+import com.tenten.eatmatjib.common.exception.ErrorCode;
 import com.tenten.eatmatjib.common.exception.GlobalExceptionHandler;
 import com.tenten.eatmatjib.restaurant.domain.Restaurant;
 import com.tenten.eatmatjib.restaurant.service.RestaurantQueryService;
@@ -96,7 +98,8 @@ class RestaurantControllerTest {
   void getRestaurantDetail_whenRestaurantDoesNotExist_thenReturn404() throws Exception {
     // given
     Long restaurantId = 1L;
-    when(restaurantQueryService.getRestaurantDetail(restaurantId)).thenThrow(new IllegalArgumentException("해당 음식점이 존재하지 않습니다."));
+    when(restaurantQueryService.getRestaurantDetail(restaurantId)).thenThrow(new BusinessException(
+        ErrorCode.RESTAURANT_NOT_FOUNT));
 
     // when & then
     mockMvc.perform(get("/api/v1/restaurants/{id}/detail", restaurantId)
