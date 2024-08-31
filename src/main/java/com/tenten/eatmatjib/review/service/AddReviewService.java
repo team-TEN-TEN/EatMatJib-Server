@@ -27,7 +27,7 @@ public class AddReviewService {
         .orElseThrow(() -> new BusinessException(ErrorCode.RESTAURANT_NOT_FOUNT));
 
     // 멤버 조회
-    Member member = memberRepository.findById(reviewRequest.getMemberId())
+    Member member = memberRepository.findByAccount(reviewRequest.getMemberAccount())
         .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
     // 리뷰 생성

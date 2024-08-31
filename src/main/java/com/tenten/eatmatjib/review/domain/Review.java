@@ -49,4 +49,8 @@ public class Review {
         this.member = member;
         this.restaurant = restaurant;
     }
+
+    public void updateRestaurant (Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
 }
