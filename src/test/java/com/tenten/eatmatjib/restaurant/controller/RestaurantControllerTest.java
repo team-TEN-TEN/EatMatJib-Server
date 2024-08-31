@@ -93,7 +93,7 @@ class RestaurantControllerTest {
         .andExpect(jsonPath("$.reviews[0].content").value("Great food!"))
         .andExpect(jsonPath("$.reviews[1].content").value("Nice ambiance."));
   }
-
+  @DisplayName("존재하지 않는 restaurandId로 음식점 상세정보를 조회하려 할 때 404를 반환한다.")
   @Test
   void getRestaurantDetail_whenRestaurantDoesNotExist_thenReturn404() throws Exception {
     // given
