@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +17,14 @@ import java.util.List;
 @Tag(name = "음식점")
 @RestController
 @RequestMapping("/api/v1/restaurants")
-@RequiredArgsConstructor
 public class RestaurantController {
 
   private final RestaurantQueryService restaurantQueryService;
 
+  @Autowired
+  RestaurantController(RestaurantQueryService restaurantQueryService) {
+    this.restaurantQueryService = restaurantQueryService;
+  }
   @GetMapping("/{id}/detail")
   @Operation(
       summary = "음식점 상세조회",

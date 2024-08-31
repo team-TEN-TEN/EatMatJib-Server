@@ -1,17 +1,17 @@
 package com.tenten.eatmatjib.restaurant.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
-import static org.assertj.core.api.Assertions.*;
+import com.tenten.eatmatjib.common.exception.BusinessException;
+import com.tenten.eatmatjib.common.exception.ErrorCode;
+import com.tenten.eatmatjib.member.domain.Member;
 import com.tenten.eatmatjib.restaurant.domain.Restaurant;
 import com.tenten.eatmatjib.restaurant.repository.RestaurantRepository;
 import com.tenten.eatmatjib.review.domain.Review;
-import com.tenten.eatmatjib.review.repository.ReviewRepository;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,49 +19,88 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-
 class RestaurantQueryServiceTest {
 
   @Mock
   private RestaurantRepository restaurantRepository;
 
-  @Mock
-  private ReviewRepository reviewRepository;
-
   @InjectMocks
   private RestaurantQueryService restaurantQueryService;
+
+  private Restaurant restaurant;
+  private Member member;
+  private Review review1;
+  private Review review2;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-  }
 
-  @Test
-  void getRestaurantDetail_whenRestaurantExists_thenReturnRestaurant() {
-    // given
-    Long restaurantId = 1L;
-    Restaurant restaurant = Restaurant.builder()
-        .name("Test Restaurant")
-        .address("123 Test Street")
+    // 음식점 엔티티 생성
+    restaurant = Restaurant.builder()
+        .name("맛집")
         .zipCode("12345")
-        .cuisine("Korean")
-        .x(BigDecimal.valueOf(37.5665))
-        .y(BigDecimal.valueOf(126.9780))
-        .phoneNumber("123-456-7890")
-        .homepageUrl("http://example.com")
+        .address("서울시 강남구")
+        .cuisine("한식")
+        .x(BigDecimal.valueOf(127.12345))
+        .y(BigDecimal.valueOf(37.56789))
+        .phoneNumber("010-1234-5678")
+        .homepageUrl("http://맛집.com")
         .avgScore(BigDecimal.valueOf(4.5))
         .viewCount(100)
         .updatedAt(LocalDateTime.now())
         .build();
 
+    // 회원 엔티티 생성
+    member = Member.builder()
+        .account("John Doe")
+        .password("password123")
+        .joinedAt(LocalDateTime.now())
+        .build();
+
+    // 첫 번째 리뷰 엔티티 생성 (최근 리뷰)
+    review1 = Review.builder()
+        .content("정말 맛있어요!")
+        .score(5)
+        .createdAt(LocalDateTime.now()) // 최신 시간
+        .member(member)
+        .restaurant(restaurant)
+        .build();
+
+    // 두 번째 리뷰 엔티티 생성 (오래된 리뷰)
+    review2 = Review.builder()
+        .content("그저 그랬어요.")
+        .score(3)
+        .createdAt(LocalDateTime.now().minusDays(1)) // 하루 전 시간
+        .member(member)
+        .restaurant(restaurant)
+        .build();
+
+    // 음식점에 리뷰 추가 (리뷰가 최신순으로 정렬된 상태여야 함)
+    restaurant.addReview(review1);
+    restaurant.addReview(review2);
+  }
+
+  @Test
+  void getRestaurantDetail_whenRestaurantExists_thenReturnRestaurantWithReviewsInDescendingOrder() {
+    // given
+    Long restaurantId = 1L;
     when(restaurantRepository.findById(restaurantId)).thenReturn(Optional.of(restaurant));
 
     // when
-    Restaurant foundRestaurant = restaurantQueryService.getRestaurantDetail(restaurantId);
+    Restaurant result = restaurantQueryService.getRestaurantDetail(restaurantId);
 
     // then
-    assertThat(foundRestaurant).isNotNull();
-    assertThat(foundRestaurant.getName()).isEqualTo("Test Restaurant");
+    assertNotNull(result);
+    assertEquals(restaurant.getId(), result.getId());
+    assertEquals(restaurant.getName(), result.getName());
+    assertFalse(result.getReviews().isEmpty());
+    assertEquals(2, result.getReviews().size());
+
+    // 리뷰가 최신순으로 정렬되었는지 검증
+    assertEquals(review1.getCreatedAt(), result.getReviews().get(0).getCreatedAt());
+    assertEquals(review2.getCreatedAt(), result.getReviews().get(1).getCreatedAt());
+    assertTrue(result.getReviews().get(0).getCreatedAt().isAfter(result.getReviews().get(1).getCreatedAt()));
   }
 
   @Test
@@ -71,31 +110,10 @@ class RestaurantQueryServiceTest {
     when(restaurantRepository.findById(restaurantId)).thenReturn(Optional.empty());
 
     // when & then
-    assertThrows(IllegalArgumentException.class, () -> restaurantQueryService.getRestaurantDetail(restaurantId));
-  }
+    BusinessException exception = assertThrows(BusinessException.class,
+        () -> restaurantQueryService.getRestaurantDetail(restaurantId));
 
-  @Test
-  void getReviewsByRestaurantId_whenReviewsExist_thenReturnReviewsSortedByCreatedAtDesc() {
-    // given
-    Long restaurantId = 1L;
-    Review review1 = Review.builder()
-        .content("Review 1")
-        .score(5)
-        .createdAt(LocalDateTime.now().minusDays(1))
-        .build();
-    Review review2 = Review.builder()
-        .content("Review 2")
-        .score(4)
-        .createdAt(LocalDateTime.now())
-        .build();
-    when(reviewRepository.findByRestaurantIdOrderByCreatedAtDesc(restaurantId)).thenReturn(
-        List.of(review2, review1));
-
-    // when
-    List<Review> reviews = restaurantQueryService.getReviewsByRestaurantId(restaurantId);
-
-    // then
-    assertThat(reviews).hasSize(2);
-    assertThat(reviews.get(0).getCreatedAt()).isAfter(reviews.get(1).getCreatedAt());
+    // 예외에 올바른 오류 코드가 포함되어 있는지 확인
+    assertEquals(ErrorCode.RESTAURANT_NOT_FOUNT, exception.getErrorCode());
   }
 }

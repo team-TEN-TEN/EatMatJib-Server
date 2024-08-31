@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -59,13 +60,12 @@ public class Restaurant {
 
     // Review와의 일대다 관계 설정
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
-    private List<Review> reviews;
+    private List<Review> reviews = new ArrayList<>();
 
     @Builder // 빌더 패턴을 위한 생성자
     public Restaurant(Long id, String name, String zipCode, String address, String cuisine,
         BigDecimal x, BigDecimal y, String phoneNumber, String homepageUrl,
         BigDecimal avgScore, int viewCount, LocalDateTime updatedAt) {
-        this.id = id;
         this.name = name;
         this.zipCode = zipCode;
         this.address = address;
@@ -77,5 +77,10 @@ public class Restaurant {
         this.avgScore = avgScore;
         this.viewCount = viewCount;
         this.updatedAt = updatedAt;
+    }
+
+    public void addReview(Review review) {
+        this.reviews.add(review);
+        review.updateRestaurant(this);
     }
 }

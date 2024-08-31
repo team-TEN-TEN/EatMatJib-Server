@@ -43,11 +43,14 @@ public class Review {
 
     @Builder
     public Review(Long id, String content, int score, LocalDateTime createdAt, Member member, Restaurant restaurant) {
-        this.id = id;
         this.content = content;
         this.score = score;
         this.createdAt = createdAt;
         this.member = member;
+        this.restaurant = restaurant;
+    }
+
+    public void updateRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
 }
