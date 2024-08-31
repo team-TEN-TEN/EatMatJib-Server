@@ -1,6 +1,8 @@
 package com.tenten.eatmatjib.restaurant.service;
 
 
+import com.tenten.eatmatjib.common.exception.BusinessException;
+import com.tenten.eatmatjib.common.exception.ErrorCode;
 import com.tenten.eatmatjib.restaurant.domain.Restaurant;
 import com.tenten.eatmatjib.restaurant.repository.RestaurantRepository;
 import com.tenten.eatmatjib.review.domain.Review;
@@ -20,7 +22,7 @@ public class RestaurantQueryService {
   public Restaurant getRestaurantDetail(Long restaurantId) {
     // Restaurant 엔티티를 ID로 조회
     return restaurantRepository.findById(restaurantId)
-        .orElseThrow(() -> new IllegalArgumentException("해당 음식점이 존재하지 않습니다. ID: " + restaurantId));
+        .orElseThrow(() -> new BusinessException(ErrorCode.RESTAURANT_NOT_FOUNT));
   }
 
   public List<Review> getReviewsByRestaurantId(Long restaurantId) {
