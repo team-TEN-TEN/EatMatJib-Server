@@ -102,7 +102,7 @@ public class RestaurantControllerTest {
     when(restaurantQueryService.getReviewsByRestaurantId(anyLong())).thenReturn(reviews);
 
     // Then: 컨트롤러의 엔드포인트를 호출하고, 예상된 응답이 반환되는지 검증
-    mockMvc.perform(get("/api/v1/restaurants/{id}/detail", restaurantId)  // 테스트할 URL 및 PathVariable 설정
+    mockMvc.perform(get("/api/v1/restaurants/{restaurantId}/detail", restaurantId)  // 테스트할 URL 및 PathVariable 설정
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(restaurantId))  // JSON 응답의 특정 필드 검증
@@ -121,7 +121,7 @@ public class RestaurantControllerTest {
         ErrorCode.RESTAURANT_NOT_FOUNT));
 
     // when & then
-    mockMvc.perform(get("/api/v1/restaurants/{id}/detail", restaurantId)
+    mockMvc.perform(get("/api/v1/restaurants/{restaurantId}/detail", restaurantId)
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound());
   }

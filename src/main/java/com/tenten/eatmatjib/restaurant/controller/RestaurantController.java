@@ -25,7 +25,7 @@ public class RestaurantController {
   RestaurantController(RestaurantQueryService restaurantQueryService) {
     this.restaurantQueryService = restaurantQueryService;
   }
-  @GetMapping("/{id}/detail")
+  @GetMapping("/{restaurantId}/detail")
   @Operation(
       summary = "음식점 상세조회",
       description = "요청받은 restaurantId의 음식점에 대해 상세정보(모든필드)를 반환합니다.",
@@ -34,7 +34,7 @@ public class RestaurantController {
           @ApiResponse(responseCode = "404", description = "음식점이 존재하지 않습니다."),
       }
   )
-  public ResponseEntity<RestaurantQueryRes> getRestaurantDetail(@PathVariable Long id) {
+  public ResponseEntity<RestaurantQueryRes> getRestaurantDetail(@PathVariable("restaurantId") Long id) {
     Restaurant restaurant = restaurantQueryService.getRestaurantDetail(id);
     List<Review> reviews = restaurantQueryService.getReviewsByRestaurantId(id);
     RestaurantQueryRes response = new RestaurantQueryRes(restaurant, reviews);
