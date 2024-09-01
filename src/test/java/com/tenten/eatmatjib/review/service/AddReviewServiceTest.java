@@ -81,6 +81,7 @@ class AddReviewServiceTest {
         .build();
   }
 
+  @DisplayName("정상 케이스 (200). 두 리뷰 점수의 평균으로 음식점의 score값이 반영된 경우")
   @Test
   void testAddReviewAndUpdateRating() {
 
