@@ -41,13 +41,16 @@ public class RestaurantControllerTest {
   @MockBean
   private RestaurantQueryService restaurantQueryService;  // MockBean을 사용하여 RestaurantQueryService를 모의 객체로 주입
 
-  @DisplayName("정상 케이스 테스트. restaurantId가 존재하고, 리뷰는 최신 순으로 반환.")
-  @Test
-  void getRestaurantDetail_ReturnsRestaurantDetailsAndReviews() throws Exception {
+  private Restaurant restaurant;
+  private Member member;
+  private List<Review> reviews;
+
+  @BeforeEach
+  void setUp() {
     // Given: 테스트 데이터 준비
     long restaurantId = 1L;
-    Restaurant restaurant = Restaurant.builder()
-        .id(1L)
+    restaurant = Restaurant.builder()
+        .id(restaurantId)
         .name("맛집")
         .zipCode("12345")
         .address("서울시 강남구")
@@ -62,7 +65,7 @@ public class RestaurantControllerTest {
         .build();
 
     // 회원 엔티티 생성
-    Member member = Member.builder()
+    member = Member.builder()
         .account("John Doe")
         .password("password123")
         .joinedAt(LocalDateTime.now())
@@ -86,7 +89,13 @@ public class RestaurantControllerTest {
         .restaurant(restaurant)
         .build();
 
-    List<Review> reviews = List.of(review1, review2);
+    reviews = List.of(review1, review2);
+  }
+  @DisplayName("정상 케이스 테스트. restaurantId가 존재하고, 리뷰는 최신 순으로 반환.")
+  @Test
+  void getRestaurantDetail_ReturnsRestaurantDetailsAndReviews() throws Exception {
+    // Given: 테스트 데이터 준비
+    long restaurantId = 1L;
 
     // When: Service 메서드가 호출될 때, 미리 정의한 객체를 반환하도록 설정
     when(restaurantQueryService.getRestaurantDetail(anyLong())).thenReturn(restaurant);
