@@ -1,5 +1,7 @@
 package com.tenten.eatmatjib.review.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tenten.eatmatjib.common.exception.BusinessException;
+import com.tenten.eatmatjib.common.exception.ErrorCode;
 import com.tenten.eatmatjib.review.dto.ReviewRequest;
 import com.tenten.eatmatjib.review.service.AddReviewService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -29,6 +33,7 @@ class ReviewControllerTest {
 
   @InjectMocks
   private ReviewController reviewController;
+
 
   @BeforeEach
   void setUp() {
@@ -62,4 +67,27 @@ class ReviewControllerTest {
 
     verify(addReviewService).addReviewAndUpdateRating(any(ReviewRequest.class));
   }
+
+  @DisplayName("memberAccount가 존재하지 않는 경우 404에러")
+  @Test
+  void testAddReview_whenMemberNotExists_thenReturnNotFound() throws Exception {
+    // Given
+    ReviewRequest reviewRequest = ReviewRequest.builder()
+        .memberAccount("ten")
+        .restaurantId(1L)
+        .content("정말 맛있어요!")
+        .score(5)
+        .build();
+
+    doThrow(new BusinessException(ErrorCode.MEMBER_NOT_FOUND))
+        .when(addReviewService).addReviewAndUpdateRating(reviewRequest);
+
+    // When & Then
+    mockMvc.perform(put("/api/v1/reviews")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(new ObjectMapper().writeValueAsString(reviewRequest)))
+        .andExpect(status().isNotFound());
+  }
+
+
 }
