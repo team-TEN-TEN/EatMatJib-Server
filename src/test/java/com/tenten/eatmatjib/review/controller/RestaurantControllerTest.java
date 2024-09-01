@@ -89,5 +89,26 @@ class ReviewControllerTest {
         .andExpect(status().isNotFound());
   }
 
+  @DisplayName("restaurantId가 존재하지 않는 경우 404에러")
+  @Test
+  void testAddReview_whenRestaurantNotExists_thenReturnNotFound() throws Exception {
+    // Given
+    ReviewRequest reviewRequest = ReviewRequest.builder()
+        .memberAccount("ten")
+        .restaurantId(1L)
+        .content("정말 맛있어요!")
+        .score(5)
+        .build();
+
+    doThrow(new BusinessException(ErrorCode.RESTAURANT_NOT_FOUNT))
+        .when(addReviewService).addReviewAndUpdateRating(reviewRequest);
+
+    // When & Then
+    mockMvc.perform(put("/api/v1/reviews")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(new ObjectMapper().writeValueAsString(reviewRequest)))
+        .andExpect(status().isNotFound());
+  }
+
 
 }
