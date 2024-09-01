@@ -44,9 +44,9 @@ class ReviewControllerTest {
         .build();
   }
 
-  @DisplayName("ReviewController 테스트. 서비스와 의존성 제거")
+  @DisplayName("정상 케이스 테스트 (201) - 서비스 의존성 제거")
   @Test
-  void testAddReview() throws Exception {
+  void testAddReview_whenMemberAndRestaurantExist_thenReturnCreated() throws Exception {
     // Given
     ReviewRequest reviewRequest = ReviewRequest.builder()
         .memberAccount("ten")
