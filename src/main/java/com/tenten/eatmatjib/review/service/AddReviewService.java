@@ -52,6 +52,7 @@ public class AddReviewService {
         .reduce(BigDecimal.ZERO, BigDecimal::add)
         .divide(BigDecimal.valueOf(reviews.size()), 1, BigDecimal.ROUND_HALF_UP);
 
+    restaurant.addReview(review);
     restaurant.updateAvgScore(avgScore);
     restaurantRepository.save(restaurant);
 

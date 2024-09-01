@@ -82,7 +82,6 @@ public class Restaurant {
 
     public void addReview (Review review) {
         this.reviews.add(review);
-        review.updateRestaurant(this);
     }
 
 
