@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -83,6 +84,7 @@ class RestaurantQueryServiceTest {
 
   }
 
+  @DisplayName("정상 케이스 (200). 리뷰가 최신 순으로 정렬되었는지 확인.")
   @Test
   void getRestaurantDetail_whenRestaurantExists_thenReturnRestaurantWithReviewsInDescendingOrder() {
     // given
@@ -106,6 +108,7 @@ class RestaurantQueryServiceTest {
     assertTrue(result.getReviews().get(0).getCreatedAt().isAfter(result.getReviews().get(1).getCreatedAt()));
   }
 
+  @DisplayName("restaurantId가 존재하지 않는 경우 404 에러")
   @Test
   void getRestaurantDetail_whenRestaurantDoesNotExist_thenThrowException() {
     // given
