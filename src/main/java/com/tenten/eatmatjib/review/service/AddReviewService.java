@@ -9,6 +9,7 @@ import com.tenten.eatmatjib.restaurant.repository.RestaurantRepository;
 import com.tenten.eatmatjib.review.domain.Review;
 import com.tenten.eatmatjib.review.dto.ReviewRequest;
 import com.tenten.eatmatjib.review.repository.ReviewRepository;
+import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,10 +20,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class AddReviewService {
 
-  MemberRepository memberRepository;
-  ReviewRepository reviewRepository;
-  RestaurantRepository restaurantRepository;
+  private final MemberRepository memberRepository;
+  private final ReviewRepository reviewRepository;
+  private final RestaurantRepository restaurantRepository;
 
+  @Transactional
   public void addReviewAndUpdateRating(ReviewRequest reviewRequest) {
     // 음식점 조회
     Restaurant restaurant = restaurantRepository.findById(reviewRequest.getRestaurantId())
@@ -52,9 +54,13 @@ public class AddReviewService {
         .reduce(BigDecimal.ZERO, BigDecimal::add)
         .divide(BigDecimal.valueOf(reviews.size()), 1, BigDecimal.ROUND_HALF_UP);
 
-    restaurant.addReview(review);
     restaurant.updateAvgScore(avgScore);
     restaurantRepository.save(restaurant);
+
+    System.out.println("레스토랑 ID: " + restaurant.getId() + "의 리뷰 목록:");
+    restaurant.getReviews().forEach(r ->
+        System.out.println("리뷰 ID: " + r.getId() + ", 내용: " + r.getContent() + ", 평점: " + r.getScore())
+    );
 
   }
 

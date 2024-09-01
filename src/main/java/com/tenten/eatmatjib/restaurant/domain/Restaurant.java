@@ -80,10 +80,6 @@ public class Restaurant {
         this.updatedAt = updatedAt;
     }
 
-    public void addReview (Review review) {
-        this.reviews.add(review);
-    }
-
 
     public void updateAvgScore(BigDecimal avgScore) {
         this.avgScore = avgScore;

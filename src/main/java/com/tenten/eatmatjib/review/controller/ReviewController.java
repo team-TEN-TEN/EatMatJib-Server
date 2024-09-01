@@ -1,6 +1,5 @@
 package com.tenten.eatmatjib.review.controller;
 
-import com.tenten.eatmatjib.review.domain.Review;
 import com.tenten.eatmatjib.review.dto.ReviewRequest;
 import com.tenten.eatmatjib.review.service.AddReviewService;
 import io.swagger.v3.oas.annotations.Operation;
