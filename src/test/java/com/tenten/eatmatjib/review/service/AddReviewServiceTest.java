@@ -9,8 +9,8 @@ import com.tenten.eatmatjib.restaurant.repository.RestaurantRepository;
 import com.tenten.eatmatjib.review.domain.Review;
 import com.tenten.eatmatjib.review.dto.ReviewRequest;
 import com.tenten.eatmatjib.review.repository.ReviewRepository;
-import java.time.temporal.ChronoUnit;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
@@ -127,6 +127,7 @@ class AddReviewServiceTest {
     assertEquals(expectedAvgScore, capturedRestaurant.getAvgScore());
   }
 
+  @DisplayName("restauranId에 해당하는 음식점이 없는 경우")
   @Test
   void testAddReviewAndUpdateRating_RestaurantNotFound() {
     // Given
@@ -146,6 +147,7 @@ class AddReviewServiceTest {
     assertEquals(ErrorCode.RESTAURANT_NOT_FOUNT, thrown.getErrorCode());
   }
 
+  @DisplayName("memberAccount에 해당하는 멤버가 존재하지 않는 경우")
   @Test
   void testAddReviewAndUpdateRating_MemberNotFound() {
     // Given
