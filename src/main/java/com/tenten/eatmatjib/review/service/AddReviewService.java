@@ -57,11 +57,6 @@ public class AddReviewService {
     restaurant.updateAvgScore(avgScore);
     restaurantRepository.save(restaurant);
 
-    System.out.println("레스토랑 ID: " + restaurant.getId() + "의 리뷰 목록:");
-    restaurant.getReviews().forEach(r ->
-        System.out.println("리뷰 ID: " + r.getId() + ", 내용: " + r.getContent() + ", 평점: " + r.getScore())
-    );
-
   }
 
 
