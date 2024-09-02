@@ -66,9 +66,9 @@ class MemberControllerTest {
     @BeforeEach
     void setUp() {
         mockMvc = standaloneSetup(memberController)
-            .setControllerAdvice(GlobalExceptionHandler.class)
-            .alwaysDo(print())
-            .build();
+                .setControllerAdvice(GlobalExceptionHandler.class)
+                .alwaysDo(print())
+                .build();
     }
 
     @DisplayName("사용자가 회원가입을 성공하면 201을 반환한다.")
@@ -83,14 +83,14 @@ class MemberControllerTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(
-            post("/api/v1/members/register")
-                .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
+                post("/api/v1/members/register")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
         );
 
         // then
         resultActions.andExpect(status().isCreated())
-            .andExpect(jsonPath("$.memberId").value(response.getMemberId()));
+                .andExpect(jsonPath("$.memberId").value(response.getMemberId()));
     }
 
     @DisplayName("사용자가 이미 사용중인 계정으로 회원가입을 하면 409를 반환한다.")
@@ -100,18 +100,18 @@ class MemberControllerTest {
         RegisterMemberReq request = getRegisterMemberReq();
 
         when(memberRegisterService.execute(any()))
-            .thenThrow(new BusinessException(ACCOUNT_CONFLICT));
+                .thenThrow(new BusinessException(ACCOUNT_CONFLICT));
 
         // when
         ResultActions resultActions = mockMvc.perform(
-            post("/api/v1/members/register")
-                .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
+                post("/api/v1/members/register")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
         );
 
         // then
         resultActions.andExpect(status().isConflict())
-            .andExpect(jsonPath("$.message").value("이미 사용중인 계정입니다."));
+                .andExpect(jsonPath("$.message").value("이미 사용중인 계정입니다."));
     }
 
     @DisplayName("사용자가 로그인을 성공하면 200을 반환한다.")
@@ -125,16 +125,16 @@ class MemberControllerTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(
-            post("/api/v1/members/login")
-                .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
+                post("/api/v1/members/login")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
         );
 
         // then
         resultActions.andExpect(status().isOk())
-            .andExpect(jsonPath("$.account").value(response.getAccount()))
-            .andExpect(jsonPath("$.accessToken").value(response.getAccessToken()))
-            .andExpect(jsonPath("$.refreshToken").value(response.getRefreshToken()));
+                .andExpect(jsonPath("$.account").value(response.getAccount()))
+                .andExpect(jsonPath("$.accessToken").value(response.getAccessToken()))
+                .andExpect(jsonPath("$.refreshToken").value(response.getRefreshToken()));
     }
 
     @DisplayName("사용자가 존재하지 않는 계정으로 로그인을 하면 401을 반환한다.")
@@ -144,19 +144,19 @@ class MemberControllerTest {
         LoginMemberReq request = getLoginMemberReq();
 
         when(memberLoginService.execute(any())).thenThrow(
-            new BusinessException(ACCOUNT_UNAUTHORIZED)
+                new BusinessException(ACCOUNT_UNAUTHORIZED)
         );
 
         // when
         ResultActions resultActions = mockMvc.perform(
-            post("/api/v1/members/login")
-                .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
+                post("/api/v1/members/login")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
         );
 
         // then
         resultActions.andExpect(status().isUnauthorized())
-            .andExpect(jsonPath("$.message").value("존재하지 않는 계정입니다."));
+                .andExpect(jsonPath("$.message").value("존재하지 않는 계정입니다."));
     }
 
     @DisplayName("사용자가 비밀번호 잘못 입력 후 로그인을 하면 401을 반환한다.")
@@ -166,19 +166,19 @@ class MemberControllerTest {
         LoginMemberReq request = getLoginMemberReq();
 
         when(memberLoginService.execute(any())).thenThrow(
-            new BusinessException(PASSWORD_UNAUTHORIZED)
+                new BusinessException(PASSWORD_UNAUTHORIZED)
         );
 
         // when
         ResultActions resultActions = mockMvc.perform(
-            post("/api/v1/members/login")
-                .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
+                post("/api/v1/members/login")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
         );
 
         // then
         resultActions.andExpect(status().isUnauthorized())
-            .andExpect(jsonPath("$.message").value("비밀번호를 잘못 입력했습니다."));
+                .andExpect(jsonPath("$.message").value("비밀번호를 잘못 입력했습니다."));
     }
 
     @DisplayName("사용자 정보 조회를 성공하면 200을 반환한다.")
@@ -273,16 +273,16 @@ class MemberControllerTest {
 
     private RegisterMemberReq getRegisterMemberReq() {
         return RegisterMemberReq.builder()
-            .account("tenten")
-            .password("password12!")
-            .build();
+                .account("tenten")
+                .password("password12!")
+                .build();
     }
 
     private LoginMemberReq getLoginMemberReq() {
         return LoginMemberReq.builder()
-            .account("tenten")
-            .password("password12!")
-            .build();
+                .account("tenten")
+                .password("password12!")
+                .build();
     }
 
     private UpdateMemberReq getUpdateMemberReq() {
@@ -295,9 +295,9 @@ class MemberControllerTest {
 
     private Member getMember() {
         return Member.builder()
-            .account("tenten")
-            .password("password12!")
-            .joinedAt(LocalDateTime.now())
-            .build();
+                .account("tenten")
+                .password("password12!")
+                .joinedAt(LocalDateTime.now())
+                .build();
     }
 }

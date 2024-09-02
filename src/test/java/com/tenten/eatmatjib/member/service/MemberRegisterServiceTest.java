@@ -59,7 +59,7 @@ class MemberRegisterServiceTest {
 
         // when
         BusinessException exception = assertThrows(BusinessException.class,
-            () -> memberRegisterService.execute(request)
+                () -> memberRegisterService.execute(request)
         );
 
         // then
@@ -68,8 +68,8 @@ class MemberRegisterServiceTest {
 
     private RegisterMemberReq getRegisterMemberReq() {
         return RegisterMemberReq.builder()
-            .account("tenten")
-            .password("password12!")
-            .build();
+                .account("tenten")
+                .password("password12!")
+                .build();
     }
 }

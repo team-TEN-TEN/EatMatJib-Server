@@ -48,15 +48,15 @@ public class MemberController {
     @PostMapping("/register")
     @Operation(summary = "사용자 회원가입")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "사용자 회원가입 성공"),
-        @ApiResponse(
-            responseCode = "409",
-            description = "이미 사용중인 계정입니다.",
-            content = {@Content(schema = @Schema(implementation = ErrorResponse.class))}
-        )
+            @ApiResponse(responseCode = "201", description = "사용자 회원가입 성공"),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "이미 사용중인 계정입니다.",
+                    content = {@Content(schema = @Schema(implementation = ErrorResponse.class))}
+            )
     })
     public ResponseEntity<RegisterMemberRes> register(
-        @RequestBody @Valid RegisterMemberReq request
+            @RequestBody @Valid RegisterMemberReq request
     ) {
         RegisterMemberRes response = memberRegisterService.execute(request);
         return ResponseEntity.status(CREATED).body(response);
@@ -65,12 +65,12 @@ public class MemberController {
     @PostMapping("/login")
     @Operation(summary = "사용자 로그인")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "사용자 로그인 성공"),
-        @ApiResponse(
-            responseCode = "401",
-            description = "1. 존재하지 않는 계정입니다.\n2. 비밀번호를 잘못 입력했습니다.",
-            content = {@Content(schema = @Schema(implementation = ErrorResponse.class))}
-        )
+            @ApiResponse(responseCode = "200", description = "사용자 로그인 성공"),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "1. 존재하지 않는 계정입니다.\n2. 비밀번호를 잘못 입력했습니다.",
+                    content = {@Content(schema = @Schema(implementation = ErrorResponse.class))}
+            )
     })
     public ResponseEntity<LoginMemberRes> login(@RequestBody @Valid LoginMemberReq request) {
         LoginMemberRes response = memberLoginService.execute(request);

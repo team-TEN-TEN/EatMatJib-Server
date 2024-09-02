@@ -14,7 +14,8 @@ public record ErrorResponse<T>(
                 .body(new ErrorResponse<>(errorCode.getMessage(), null));
     }
 
-    public static <T> ResponseEntity<ErrorResponse<T>> toResponseEntity(ErrorCode errorCode, T detail) {
+    public static <T> ResponseEntity<ErrorResponse<T>> toResponseEntity(ErrorCode errorCode,
+            T detail) {
         return ResponseEntity.status(errorCode.getHttpStatus())
                 .body(new ErrorResponse<>(errorCode.getMessage(), detail));
     }

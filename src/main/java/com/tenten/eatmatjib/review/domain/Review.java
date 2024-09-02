@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -39,4 +40,15 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
+
+    @Builder
+    public Review(String content, int score, LocalDateTime createdAt, Member member,
+            Restaurant restaurant) {
+        this.content = content;
+        this.score = score;
+        this.createdAt = createdAt;
+        this.member = member;
+        this.restaurant = restaurant;
+    }
+
 }

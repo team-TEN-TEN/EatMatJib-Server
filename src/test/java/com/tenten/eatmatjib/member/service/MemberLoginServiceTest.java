@@ -50,10 +50,10 @@ class MemberLoginServiceTest {
         when(memberRepository.findByAccount(any())).thenReturn(Optional.ofNullable(member));
         when(passwordEncoder.matches(any(), any())).thenReturn(true);
         when(jwtUtil.createToken(any())).thenReturn(
-            JwtToken.builder()
-                .accessToken("accessToken")
-                .refreshToken("refreshToken")
-                .build()
+                JwtToken.builder()
+                        .accessToken("accessToken")
+                        .refreshToken("refreshToken")
+                        .build()
         );
 
         // when
@@ -73,7 +73,7 @@ class MemberLoginServiceTest {
 
         // when
         BusinessException exception = assertThrows(BusinessException.class,
-            () -> memberLoginService.execute(request)
+                () -> memberLoginService.execute(request)
         );
 
         // then
@@ -91,7 +91,7 @@ class MemberLoginServiceTest {
 
         // when
         BusinessException exception = assertThrows(BusinessException.class,
-            () -> memberLoginService.execute(request)
+                () -> memberLoginService.execute(request)
         );
 
         // then
@@ -100,24 +100,24 @@ class MemberLoginServiceTest {
 
     private LoginMemberReq getLoginMemberReq() {
         return LoginMemberReq.builder()
-            .account("tenten")
-            .password("password12!")
-            .build();
+                .account("tenten")
+                .password("password12!")
+                .build();
     }
 
     private Member getMember() {
         return Member.builder()
-            .account("tenten")
-            .password("password12!")
-            .joinedAt(LocalDateTime.now())
-            .build();
+                .account("tenten")
+                .password("password12!")
+                .joinedAt(LocalDateTime.now())
+                .build();
     }
 
     private Member getPreMember() {
         return Member.builder()
-            .account("tenten2")
-            .password("password12!")
-            .joinedAt(LocalDateTime.now())
-            .build();
+                .account("tenten2")
+                .password("password12!")
+                .joinedAt(LocalDateTime.now())
+                .build();
     }
 }

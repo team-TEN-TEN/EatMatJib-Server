@@ -1,24 +1,34 @@
 package com.tenten.eatmatjib.restaurant.controller;
 
+import com.tenten.eatmatjib.common.exception.ErrorResponse;
+import com.tenten.eatmatjib.restaurant.domain.Restaurant;
+import com.tenten.eatmatjib.restaurant.dto.RestaurantQueryRes;
+import com.tenten.eatmatjib.restaurant.service.RestaurantQueryService;
+import com.tenten.eatmatjib.review.domain.Review;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import com.tenten.eatmatjib.common.config.auth.AuthUser;
 import com.tenten.eatmatjib.member.domain.Coord;
 import com.tenten.eatmatjib.restaurant.controller.response.RestaurantsQueryRes;
-import com.tenten.eatmatjib.restaurant.service.RestaurantQueryService;
 import com.tenten.eatmatjib.restaurant.service.command.RestaurantSearchCondition;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
 
 @Validated
 @RestController
@@ -28,6 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestaurantController {
 
     private final RestaurantQueryService restaurantQueryService;
+
 
     @GetMapping
     @Operation(summary = "맛집 목록")
@@ -59,6 +70,25 @@ public class RestaurantController {
         Page<RestaurantsQueryRes> response =
             restaurantQueryService.execute(memberId, searchCondition, memberLocation, pageRequest);
 
+        return ResponseEntity.ok(response);
+    }
+
+
+    @GetMapping("/{restaurantId}/detail")
+    @Operation(
+            summary = "음식점 상세조회",
+            description = "요청받은 restaurantId의 음식점에 대해 상세정보(모든필드)를 반환합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "음식점의 모든 필드를 포함하는 DTO 반환"),
+                    @ApiResponse(responseCode = "404", content = {
+                            @Content(schema = @Schema(implementation = ErrorResponse.class))}),
+            }
+    )
+    public ResponseEntity<RestaurantQueryRes> getRestaurantDetail(
+            @PathVariable("restaurantId") Long id) {
+        Restaurant restaurant = restaurantQueryService.getRestaurantDetail(id);
+        List<Review> reviews = restaurantQueryService.getReviewsByRestaurantId(id);
+        RestaurantQueryRes response = new RestaurantQueryRes(restaurant, reviews);
         return ResponseEntity.ok(response);
     }
 }
