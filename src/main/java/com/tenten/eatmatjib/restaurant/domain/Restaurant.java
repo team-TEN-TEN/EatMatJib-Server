@@ -13,12 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Restaurant {
 
     @Id
@@ -80,7 +82,12 @@ public class Restaurant {
     }
 
 
+    public void addReview(Review review) {
+        this.reviews.add(review);
+    }
+
     public void updateAvgScore(BigDecimal avgScore) {
         this.avgScore = avgScore;
     }
+
 }

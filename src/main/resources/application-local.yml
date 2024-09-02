@@ -17,3 +17,9 @@ spring:
   sql:
     init:
       mode: always
+
+custom:
+  file:
+    csv:
+      region:
+        path: /sgg_lat_lon.csv
