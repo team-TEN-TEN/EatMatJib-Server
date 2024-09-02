@@ -17,6 +17,12 @@ public enum ErrorCode {
     INVALID_FORMAT_EXCEPTION(HttpStatus.BAD_REQUEST, "요청된 데이터의 형식이 잘못되었습니다. 유효한 JSON 형식을 사용해 주세요."),
     MISSING_PARAMETER_EXCEPTION(HttpStatus.BAD_REQUEST, "필수 요청 값이 누락되었거나 잘못되었습니다."),
 
+    INVALID_LATITUDE_EXCEPTION(HttpStatus.BAD_REQUEST, "위도는 -90 이상, 90 이하이어야 합니다."),
+    INVALID_LONGITUDE_EXCEPTION(HttpStatus.BAD_REQUEST, "경도는 -180 이상, 180 이하이어야 합니다."),
+    INVALID_ORDER_TYPE_EXCEPTION(HttpStatus.BAD_REQUEST, "정렬 기준은 'distance,rate', 'distance', 'rate' 타입만 가능합니다."),
+    INVALID_RANGE_TYPE_EXCEPTION(HttpStatus.BAD_REQUEST, "범위는 1, 5, 10만 가능합니다."),
+    INVALID_FILTER_TYPE_EXCEPTION(HttpStatus.BAD_REQUEST, "필터링 기준은 '한식', '중국식', '일식', '기타' 타입만 가능합니다."),
+
     /**
      * 401 - Unauthorized
      */
