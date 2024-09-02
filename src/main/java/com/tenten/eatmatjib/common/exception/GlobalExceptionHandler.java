@@ -24,6 +24,12 @@ public class GlobalExceptionHandler {
     private static final String ERROR_LOG_MESSAGE = "[ERROR] {} : {}";
     private static final String WARN_LOG_MESSAGE = "[WARN] {} : {}";
 
+    @ExceptionHandler(FileNotFoundException.class)
+    protected void handleFileNotFoundException(final FileNotFoundException e) {
+        log.error(ERROR_LOG_MESSAGE, e.getClass().getSimpleName(), e.getDetail());
+        e.printStackTrace();
+    }
+
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponse<Void>> handleBusinessException(
             final BusinessException e) {
