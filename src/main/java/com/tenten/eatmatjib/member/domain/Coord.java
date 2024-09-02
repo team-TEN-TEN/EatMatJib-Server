@@ -10,6 +10,7 @@ public record Coord(
     double y
 ) {
 
+
     public static Coord of(double lat, double lon) {
         if (!(-90 <= lat && lat <= 90)) {
             throw new BusinessException(INVALID_LATITUDE_EXCEPTION);
@@ -19,4 +20,5 @@ public record Coord(
         }
         return new Coord(lat, lon);
     }
+
 }

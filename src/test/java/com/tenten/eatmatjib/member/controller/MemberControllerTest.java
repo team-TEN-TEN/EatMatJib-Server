@@ -191,21 +191,21 @@ class MemberControllerTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(
-            get("/api/v1/members/info")
-                .contentType(APPLICATION_JSON)
+                get("/api/v1/members/info")
+                        .contentType(APPLICATION_JSON)
         );
 
         // then
         resultActions.andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").value(response.getId()))
-            .andExpect(jsonPath("$.account").value(response.getAccount()))
-            .andExpect(jsonPath("$.x").value(response.getX()))
-            .andExpect(jsonPath("$.y").value(response.getY()))
-            .andExpect(
-                jsonPath("$.isRecommendationActive").value(response.getIsRecommendationActive())
-            ).andExpect(
-                jsonPath("$.joinedAt").value(response.getJoinedAt().toString())
-            );
+                .andExpect(jsonPath("$.id").value(response.getId()))
+                .andExpect(jsonPath("$.account").value(response.getAccount()))
+                .andExpect(jsonPath("$.x").value(response.getX()))
+                .andExpect(jsonPath("$.y").value(response.getY()))
+                .andExpect(
+                        jsonPath("$.isRecommendationActive").value(response.getIsRecommendationActive())
+                ).andExpect(
+                        jsonPath("$.joinedAt").value(response.getJoinedAt().toString())
+                );
     }
 
     @DisplayName("존재하지 않는 id로 사용자 정보 조회를 하면 404를 반환한다.")
@@ -216,13 +216,13 @@ class MemberControllerTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(
-            get("/api/v1/members/info")
-                .contentType(APPLICATION_JSON)
+                get("/api/v1/members/info")
+                        .contentType(APPLICATION_JSON)
         );
 
         // then
         resultActions.andExpect(status().isNotFound())
-            .andExpect(jsonPath("$.message").value("존재하지 않는 멤버입니다."));
+                .andExpect(jsonPath("$.message").value("존재하지 않는 멤버입니다."));
     }
 
     @DisplayName("사용자 설정 업데이트를 성공하면 200을 반환한다.")
@@ -236,18 +236,18 @@ class MemberControllerTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(
-            patch("/api/v1/members/info")
-                .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
+                patch("/api/v1/members/info")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
         );
 
         // then
         resultActions.andExpect(status().isOk())
-            .andExpect(jsonPath("$.x").value(response.getX()))
-            .andExpect(jsonPath("$.y").value(response.getY()))
-            .andExpect(
-                jsonPath("$.isRecommendationActive").value(response.getIsRecommendationActive())
-            );
+                .andExpect(jsonPath("$.x").value(response.getX()))
+                .andExpect(jsonPath("$.y").value(response.getY()))
+                .andExpect(
+                        jsonPath("$.isRecommendationActive").value(response.getIsRecommendationActive())
+                );
     }
 
     @DisplayName("존재하지 않는 id로 사용자 설정 업데이트를 하면 404를 반환한다.")
@@ -257,18 +257,18 @@ class MemberControllerTest {
         UpdateMemberReq request = getUpdateMemberReq();
 
         when(memberUpdateService.execute(any(), any()))
-            .thenThrow(new BusinessException(MEMBER_NOT_FOUND));
+                .thenThrow(new BusinessException(MEMBER_NOT_FOUND));
 
         // when
         ResultActions resultActions = mockMvc.perform(
-            patch("/api/v1/members/info")
-                .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
+                patch("/api/v1/members/info")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
         );
 
         // then
         resultActions.andExpect(status().isNotFound())
-            .andExpect(jsonPath("$.message").value("존재하지 않는 멤버입니다."));
+                .andExpect(jsonPath("$.message").value("존재하지 않는 멤버입니다."));
     }
 
     private RegisterMemberReq getRegisterMemberReq() {
@@ -287,10 +287,10 @@ class MemberControllerTest {
 
     private UpdateMemberReq getUpdateMemberReq() {
         return UpdateMemberReq.builder()
-            .lat(37.5665)
-            .lon(126.9780)
-            .isRecommendationActive(false)
-            .build();
+                .lat(37.5665)
+                .lon(126.9780)
+                .isRecommendationActive(false)
+                .build();
     }
 
     private Member getMember() {
