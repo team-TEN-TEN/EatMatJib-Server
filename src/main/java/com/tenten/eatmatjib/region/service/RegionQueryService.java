@@ -16,8 +16,8 @@ public class RegionQueryService {
         return regionRepository.findAll()
                 .stream()
                 .map(region -> new RegionRes(
-                        region.getSiDo(),
-                        region.getSgg()))
+                        region.getCity(),
+                        region.getDistrict()))
                 .toList();
     }
 }
