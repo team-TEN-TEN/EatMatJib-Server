@@ -120,6 +120,6 @@ class RestaurantQueryServiceTest {
         () -> restaurantQueryService.getRestaurantDetail(restaurantId));
 
     // 예외에 올바른 오류 코드가 포함되어 있는지 확인
-    assertEquals(ErrorCode.RESTAURANT_NOT_FOUNT, exception.getErrorCode());
+    assertEquals(ErrorCode.RESTAURANT_NOT_FOUND, exception.getErrorCode());
   }
 }

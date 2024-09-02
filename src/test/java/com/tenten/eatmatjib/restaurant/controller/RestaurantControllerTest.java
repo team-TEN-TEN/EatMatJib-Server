@@ -118,7 +118,7 @@ public class RestaurantControllerTest {
     // given
     Long restaurantId = 1L;
     when(restaurantQueryService.getRestaurantDetail(restaurantId)).thenThrow(new BusinessException(
-        ErrorCode.RESTAURANT_NOT_FOUNT));
+        ErrorCode.RESTAURANT_NOT_FOUND));
 
     // when & then
     mockMvc.perform(get("/api/v1/restaurants/{restaurantId}/detail", restaurantId)
