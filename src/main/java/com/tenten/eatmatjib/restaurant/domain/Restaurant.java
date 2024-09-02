@@ -59,7 +59,7 @@ public class Restaurant {
     private LocalDateTime updatedAt;
 
     // Review와의 일대다 관계 설정
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "restaurant")
     private List<Review> reviews = new ArrayList<>();
 
     @Builder // 빌더 패턴을 위한 생성자
