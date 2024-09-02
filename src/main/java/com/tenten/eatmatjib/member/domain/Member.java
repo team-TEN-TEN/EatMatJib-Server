@@ -54,4 +54,10 @@ public class Member {
                 (isRecommendationActive != null) ? isRecommendationActive : true;
         this.joinedAt = joinedAt;
     }
+
+    public void updateInfo(Coord coord, Boolean isRecommendationActive) {
+        this.x = BigDecimal.valueOf(coord.x());
+        this.y = BigDecimal.valueOf(coord.y());
+        this.isRecommendationActive = isRecommendationActive;
+    }
 }
