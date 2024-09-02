@@ -33,13 +33,13 @@ import static org.hamcrest.Matchers.*;
 public class RestaurantControllerTest {
 
     @Autowired
-    private MockMvc mockMvc;  // MockMvc를 @Autowired로 주입받습니다.
+    private MockMvc mockMvc;
 
     @MockBean
     private JwtUtil jwtUtil;
 
     @MockBean
-    private RestaurantQueryService restaurantQueryService;  // MockBean을 사용하여 RestaurantQueryService를 모의 객체로 주입
+    private RestaurantQueryService restaurantQueryService;
 
     private Restaurant restaurant;
     private Member member;
@@ -64,7 +64,7 @@ public class RestaurantControllerTest {
                 .updatedAt(LocalDateTime.now())
                 .build();
 
-        // 회원 엔티티 생성
+        // 멤버 엔티티 생성
         member = Member.builder()
                 .account("John Doe")
                 .password("password123")
