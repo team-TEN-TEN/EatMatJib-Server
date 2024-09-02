@@ -2,14 +2,18 @@ package com.tenten.eatmatjib.member.controller;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
+import com.tenten.eatmatjib.common.config.auth.AuthUser;
 import com.tenten.eatmatjib.common.exception.ErrorResponse;
 import com.tenten.eatmatjib.member.controller.request.LoginMemberReq;
 import com.tenten.eatmatjib.member.controller.request.RegisterMemberReq;
+import com.tenten.eatmatjib.member.controller.response.InfoMemberRes;
 import com.tenten.eatmatjib.member.controller.response.LoginMemberRes;
 import com.tenten.eatmatjib.member.controller.response.RegisterMemberRes;
+import com.tenten.eatmatjib.member.service.MemberInfoService;
 import com.tenten.eatmatjib.member.service.MemberLoginService;
 import com.tenten.eatmatjib.member.service.MemberRegisterService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,6 +23,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +38,7 @@ public class MemberController {
 
     private final MemberRegisterService memberRegisterService;
     private final MemberLoginService memberLoginService;
+    private final MemberInfoService memberInfoService;
 
     @PostMapping("/register")
     @Operation(summary = "사용자 회원가입")
@@ -63,6 +69,21 @@ public class MemberController {
     })
     public ResponseEntity<LoginMemberRes> login(@RequestBody @Valid LoginMemberReq request) {
         LoginMemberRes response = memberLoginService.execute(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/info")
+    @Operation(summary = "사용자 정보 조회")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "사용자 정보 조회 성공"),
+        @ApiResponse(
+            responseCode = "404",
+            description = "존재하지 않는 멤버입니다.",
+            content = {@Content(schema = @Schema(implementation = ErrorResponse.class))}
+        )
+    })
+    public ResponseEntity<InfoMemberRes> info(@Parameter(hidden = true) @AuthUser Long memberId) {
+        InfoMemberRes response = memberInfoService.execute(memberId);
         return ResponseEntity.ok(response);
     }
 }
