@@ -64,8 +64,8 @@ public class Restaurant {
 
     @Builder // 빌더 패턴을 위한 생성자
     public Restaurant(Long id, String name, String zipCode, String address, String cuisine,
-        BigDecimal x, BigDecimal y, String phoneNumber, String homepageUrl,
-        BigDecimal avgScore, int viewCount, LocalDateTime updatedAt) {
+            BigDecimal x, BigDecimal y, String phoneNumber, String homepageUrl,
+            BigDecimal avgScore, int viewCount, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.zipCode = zipCode;
@@ -80,7 +80,7 @@ public class Restaurant {
         this.updatedAt = updatedAt;
     }
 
-    public void addReview (Review review) {
+    public void addReview(Review review) {
         this.reviews.add(review);
     }
 

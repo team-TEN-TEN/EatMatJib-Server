@@ -4,4 +4,5 @@ public record Coord(
         double x,
         double y
 ) {
+
 }

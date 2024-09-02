@@ -16,17 +16,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RestaurantQueryService {
 
-  private final RestaurantRepository restaurantRepository;
-  private final ReviewRepository reviewRepository;
+    private final RestaurantRepository restaurantRepository;
+    private final ReviewRepository reviewRepository;
 
-  public Restaurant getRestaurantDetail(Long restaurantId) {
-    // Restaurant 엔티티를 ID로 조회
-    return restaurantRepository.findById(restaurantId)
-        .orElseThrow(() -> new BusinessException(ErrorCode.RESTAURANT_NOT_FOUND));
-  }
+    public Restaurant getRestaurantDetail(Long restaurantId) {
+        // Restaurant 엔티티를 ID로 조회
+        return restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESTAURANT_NOT_FOUND));
+    }
 
-  public List<Review> getReviewsByRestaurantId(Long restaurantId) {
-    // Review 엔티티를 Restaurant ID로 조회하고 최신순으로 정렬
-    return reviewRepository.findByRestaurantIdOrderByCreatedAtDesc(restaurantId);
-  }
+    public List<Review> getReviewsByRestaurantId(Long restaurantId) {
+        // Review 엔티티를 Restaurant ID로 조회하고 최신순으로 정렬
+        return reviewRepository.findByRestaurantIdOrderByCreatedAtDesc(restaurantId);
+    }
 }

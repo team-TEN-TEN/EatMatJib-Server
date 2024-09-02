@@ -42,7 +42,8 @@ public class Review {
     private Restaurant restaurant;
 
     @Builder
-    public Review( String content, int score, LocalDateTime createdAt, Member member, Restaurant restaurant) {
+    public Review(String content, int score, LocalDateTime createdAt, Member member,
+            Restaurant restaurant) {
         this.content = content;
         this.score = score;
         this.createdAt = createdAt;
