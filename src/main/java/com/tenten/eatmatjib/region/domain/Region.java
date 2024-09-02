@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Comment;
 
 @Entity
 @Getter
@@ -20,10 +21,12 @@ public class Region {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, columnDefinition = "시-도")
+    @Column(nullable = false)
+    @Comment("시-도")
     private String city;
 
-    @Column(nullable = false, columnDefinition = "시군구")
+    @Column(nullable = false)
+    @Comment("시군구")
     private String district;
 
     @Column(nullable = false)
