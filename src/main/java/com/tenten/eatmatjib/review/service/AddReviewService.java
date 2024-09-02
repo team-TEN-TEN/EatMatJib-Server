@@ -11,6 +11,7 @@ import com.tenten.eatmatjib.review.dto.ReviewRequest;
 import com.tenten.eatmatjib.review.repository.ReviewRepository;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +52,7 @@ public class AddReviewService {
                 .map(Review::getScore)
                 .map(BigDecimal::valueOf)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
-                .divide(BigDecimal.valueOf(reviews.size()), 1, BigDecimal.ROUND_HALF_UP);
+                .divide(BigDecimal.valueOf(reviews.size()), 1, RoundingMode.HALF_UP);
 
         restaurant.updateAvgScore(avgScore);
         restaurantRepository.save(restaurant);
