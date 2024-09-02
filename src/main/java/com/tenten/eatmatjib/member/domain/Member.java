@@ -39,19 +39,19 @@ public class Member {
 
     @Builder
     public Member(
-        String account,
-        String password,
-        BigDecimal x,
-        BigDecimal y,
-        Boolean isRecommendationActive,
-        LocalDateTime joinedAt
+            String account,
+            String password,
+            BigDecimal x,
+            BigDecimal y,
+            Boolean isRecommendationActive,
+            LocalDateTime joinedAt
     ) {
         this.account = account;
         this.password = password;
         this.x = x;
         this.y = y;
         this.isRecommendationActive =
-            (isRecommendationActive != null) ? isRecommendationActive : true;
+                (isRecommendationActive != null) ? isRecommendationActive : true;
         this.joinedAt = joinedAt;
     }
 }

@@ -3,7 +3,6 @@ package com.tenten.eatmatjib.restaurant.domain;
 import com.tenten.eatmatjib.review.domain.Review;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -64,8 +63,8 @@ public class Restaurant {
 
     @Builder // 빌더 패턴을 위한 생성자
     public Restaurant(Long id, String name, String zipCode, String address, String cuisine,
-        BigDecimal x, BigDecimal y, String phoneNumber, String homepageUrl,
-        BigDecimal avgScore, int viewCount, LocalDateTime updatedAt) {
+            BigDecimal x, BigDecimal y, String phoneNumber, String homepageUrl,
+            BigDecimal avgScore, int viewCount, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.zipCode = zipCode;

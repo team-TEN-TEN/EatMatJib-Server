@@ -20,44 +20,43 @@ import org.springframework.stereotype.Service;
 @Service
 public class AddReviewService {
 
-  private final MemberRepository memberRepository;
-  private final ReviewRepository reviewRepository;
-  private final RestaurantRepository restaurantRepository;
+    private final MemberRepository memberRepository;
+    private final ReviewRepository reviewRepository;
+    private final RestaurantRepository restaurantRepository;
 
-  @Transactional
-  public void addReviewAndUpdateRating(ReviewRequest reviewRequest) {
-    // 음식점 조회
-    Restaurant restaurant = restaurantRepository.findById(reviewRequest.getRestaurantId())
-        .orElseThrow(() -> new BusinessException(ErrorCode.RESTAURANT_NOT_FOUND));
+    @Transactional
+    public void addReviewAndUpdateRating(ReviewRequest reviewRequest) {
+        // 음식점 조회
+        Restaurant restaurant = restaurantRepository.findById(reviewRequest.getRestaurantId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESTAURANT_NOT_FOUND));
 
-    // 멤버 조회
-    Member member = memberRepository.findByAccount(reviewRequest.getMemberAccount())
-        .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+        // 멤버 조회
+        Member member = memberRepository.findByAccount(reviewRequest.getMemberAccount())
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
-    // 리뷰 생성
-    Review review = Review.builder()
-        .content(reviewRequest.getContent())
-        .score(reviewRequest.getScore())
-        .createdAt(LocalDateTime.now())
-        .member(member)
-        .restaurant(restaurant)
-        .build();
+        // 리뷰 생성
+        Review review = Review.builder()
+                .content(reviewRequest.getContent())
+                .score(reviewRequest.getScore())
+                .createdAt(LocalDateTime.now())
+                .member(member)
+                .restaurant(restaurant)
+                .build();
 
+        reviewRepository.save(review);
 
-    reviewRepository.save(review);
+        // 음식점의 평균 평점 업데이트
+        List<Review> reviews = reviewRepository.findByRestaurantId(reviewRequest.getRestaurantId());
+        BigDecimal avgScore = reviews.stream()
+                .map(Review::getScore)
+                .map(BigDecimal::valueOf)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .divide(BigDecimal.valueOf(reviews.size()), 1, BigDecimal.ROUND_HALF_UP);
 
-    // 음식점의 평균 평점 업데이트
-    List<Review> reviews = reviewRepository.findByRestaurantId(reviewRequest.getRestaurantId());
-    BigDecimal avgScore = reviews.stream()
-        .map(Review::getScore)
-        .map(BigDecimal::valueOf)
-        .reduce(BigDecimal.ZERO, BigDecimal::add)
-        .divide(BigDecimal.valueOf(reviews.size()), 1, BigDecimal.ROUND_HALF_UP);
+        restaurant.updateAvgScore(avgScore);
+        restaurantRepository.save(restaurant);
 
-    restaurant.updateAvgScore(avgScore);
-    restaurantRepository.save(restaurant);
-
-  }
+    }
 
 
 }

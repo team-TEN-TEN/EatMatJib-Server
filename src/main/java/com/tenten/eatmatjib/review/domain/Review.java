@@ -42,7 +42,8 @@ public class Review {
     private Restaurant restaurant;
 
     @Builder
-    Review (String content, int score, LocalDateTime createdAt, Member member, Restaurant restaurant) {
+    Review(String content, int score, LocalDateTime createdAt, Member member,
+            Restaurant restaurant) {
         this.content = content;
         this.score = score;
         this.createdAt = createdAt;
@@ -50,7 +51,7 @@ public class Review {
         this.restaurant = restaurant;
     }
 
-    public void updateRestaurant (Restaurant restaurant) {
+    public void updateRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
 }

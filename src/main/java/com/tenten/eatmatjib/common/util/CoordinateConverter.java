@@ -7,6 +7,7 @@ import org.locationtech.proj4j.ProjCoordinate;
 
 @RequiredArgsConstructor
 public class CoordinateConverter {
+
     private final CoordinateTransform coordinateTransform;
 
     public Coord convert(Coord coord) {
