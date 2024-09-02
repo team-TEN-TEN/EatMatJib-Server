@@ -536,6 +536,9 @@ Content-Type: application/json
 ```
 </details>
 
+## Related Repository
+- Data Pipeline Server: 
+[EatMatJib-DataServer](https://github.com/team-TEN-TEN/EatMatJib-DataServer)
 
 ## 프로젝트 진행 및 이슈 관리
 
