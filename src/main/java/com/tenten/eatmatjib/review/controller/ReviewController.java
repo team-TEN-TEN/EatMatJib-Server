@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,7 @@ public class ReviewController {
     private final AddReviewService addReviewService;
 
 
-    @PutMapping
+    @PostMapping
     @Operation(
             summary = "리뷰 생성",
             description = "member 테이블에 memberId, restaurant 테이블에 restaurantId와 매핑된 리뷰를 생성합니다.",

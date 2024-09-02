@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.mockito.ArgumentMatchers.any;
@@ -57,7 +57,7 @@ class ReviewControllerTest {
     doNothing().when(addReviewService).addReviewAndUpdateRating(any(ReviewRequest.class));
 
     // When & Then
-    mockMvc.perform(put("/api/v1/review")
+    mockMvc.perform(post("/api/v1/review")
             .contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content(new ObjectMapper().writeValueAsString(reviewRequest)))
@@ -82,7 +82,7 @@ class ReviewControllerTest {
         .when(addReviewService).addReviewAndUpdateRating(reviewRequest);
 
     // When & Then
-    mockMvc.perform(put("/api/v1/reviews")
+    mockMvc.perform(post("/api/v1/reviews")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(reviewRequest)))
         .andExpect(status().isNotFound());
@@ -103,7 +103,7 @@ class ReviewControllerTest {
         .when(addReviewService).addReviewAndUpdateRating(reviewRequest);
 
     // When & Then
-    mockMvc.perform(put("/api/v1/reviews")
+    mockMvc.perform(post("/api/v1/reviews")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(reviewRequest)))
         .andExpect(status().isNotFound());
