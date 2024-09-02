@@ -7,6 +7,7 @@ import static com.tenten.eatmatjib.common.exception.ErrorCode.PASSWORD_UNAUTHORI
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -20,13 +21,16 @@ import com.tenten.eatmatjib.common.exception.BusinessException;
 import com.tenten.eatmatjib.common.exception.GlobalExceptionHandler;
 import com.tenten.eatmatjib.member.controller.request.LoginMemberReq;
 import com.tenten.eatmatjib.member.controller.request.RegisterMemberReq;
+import com.tenten.eatmatjib.member.controller.request.UpdateMemberReq;
 import com.tenten.eatmatjib.member.controller.response.InfoMemberRes;
 import com.tenten.eatmatjib.member.controller.response.LoginMemberRes;
 import com.tenten.eatmatjib.member.controller.response.RegisterMemberRes;
+import com.tenten.eatmatjib.member.controller.response.UpdateMemberRes;
 import com.tenten.eatmatjib.member.domain.Member;
 import com.tenten.eatmatjib.member.service.MemberInfoService;
 import com.tenten.eatmatjib.member.service.MemberLoginService;
 import com.tenten.eatmatjib.member.service.MemberRegisterService;
+import com.tenten.eatmatjib.member.service.MemberUpdateService;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -49,6 +53,9 @@ class MemberControllerTest {
 
     @Mock
     private MemberInfoService memberInfoService;
+
+    @Mock
+    private MemberUpdateService memberUpdateService;
 
     @InjectMocks
     private MemberController memberController;
@@ -218,6 +225,52 @@ class MemberControllerTest {
             .andExpect(jsonPath("$.message").value("존재하지 않는 멤버입니다."));
     }
 
+    @DisplayName("사용자 설정 업데이트를 성공하면 200을 반환한다.")
+    @Test
+    void memberUpdateInfoSuccessReturn200() throws Exception {
+        // given
+        UpdateMemberReq request = getUpdateMemberReq();
+        UpdateMemberRes response = UpdateMemberRes.of(getMember());
+
+        when(memberUpdateService.execute(any(), any())).thenReturn(response);
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+            patch("/api/v1/members/info")
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+        );
+
+        // then
+        resultActions.andExpect(status().isOk())
+            .andExpect(jsonPath("$.x").value(response.getX()))
+            .andExpect(jsonPath("$.y").value(response.getY()))
+            .andExpect(
+                jsonPath("$.isRecommendationActive").value(response.getIsRecommendationActive())
+            );
+    }
+
+    @DisplayName("존재하지 않는 id로 사용자 설정 업데이트를 하면 404를 반환한다.")
+    @Test
+    void notFoundMemberUpdateInfoReturn404() throws Exception {
+        // given
+        UpdateMemberReq request = getUpdateMemberReq();
+
+        when(memberUpdateService.execute(any(), any()))
+            .thenThrow(new BusinessException(MEMBER_NOT_FOUND));
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+            patch("/api/v1/members/info")
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+        );
+
+        // then
+        resultActions.andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.message").value("존재하지 않는 멤버입니다."));
+    }
+
     private RegisterMemberReq getRegisterMemberReq() {
         return RegisterMemberReq.builder()
             .account("tenten")
@@ -229,6 +282,14 @@ class MemberControllerTest {
         return LoginMemberReq.builder()
             .account("tenten")
             .password("password12!")
+            .build();
+    }
+
+    private UpdateMemberReq getUpdateMemberReq() {
+        return UpdateMemberReq.builder()
+            .lat(37.5665)
+            .lon(126.9780)
+            .isRecommendationActive(false)
             .build();
     }
 

@@ -3,8 +3,8 @@ CREATE TABLE IF NOT EXISTS member
     id                       BIGINT AUTO_INCREMENT PRIMARY KEY,
     account                  VARCHAR(50) UNIQUE NOT NULL,
     password                 VARCHAR(255)       NOT NULL,
-    x                        DECIMAL(6, 10)     NULL,
-    y                        DECIMAL(6, 10)     NULL,
+    x                        DECIMAL            NULL,
+    y                        DECIMAL            NULL,
     is_recommendation_active BOOLEAN            NOT NULL DEFAULT true,
     joined_at                TIMESTAMP(6)       NOT NULL
 );
