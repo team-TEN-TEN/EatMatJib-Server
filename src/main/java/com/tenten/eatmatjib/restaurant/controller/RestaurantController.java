@@ -17,14 +17,11 @@ import java.util.List;
 @Tag(name = "음식점")
 @RestController
 @RequestMapping("/api/v1/restaurants")
+@RequiredArgsConstructor
 public class RestaurantController {
 
   private final RestaurantQueryService restaurantQueryService;
 
-  @Autowired
-  RestaurantController(RestaurantQueryService restaurantQueryService) {
-    this.restaurantQueryService = restaurantQueryService;
-  }
   @GetMapping("/{restaurantId}/detail")
   @Operation(
       summary = "음식점 상세조회",
