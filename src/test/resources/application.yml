@@ -19,3 +19,9 @@ jwt:
   time:
     access: ${JWT_ACCESS}
     refresh: ${JWT_REFRESH}
+
+custom:
+  file:
+    csv:
+      region:
+        path: /sgg_lat_lon.csv
