@@ -28,7 +28,7 @@ public class AddReviewService {
   public void addReviewAndUpdateRating(ReviewRequest reviewRequest) {
     // 음식점 조회
     Restaurant restaurant = restaurantRepository.findById(reviewRequest.getRestaurantId())
-        .orElseThrow(() -> new BusinessException(ErrorCode.RESTAURANT_NOT_FOUNT));
+        .orElseThrow(() -> new BusinessException(ErrorCode.RESTAURANT_NOT_FOUND));
 
     // 멤버 조회
     Member member = memberRepository.findByAccount(reviewRequest.getMemberAccount())

@@ -145,7 +145,7 @@ class AddReviewServiceTest {
     // When & Then
     BusinessException thrown = assertThrows(BusinessException.class, () ->
         addReviewService.addReviewAndUpdateRating(reviewRequest));
-    assertEquals(ErrorCode.RESTAURANT_NOT_FOUNT, thrown.getErrorCode());
+    assertEquals(ErrorCode.RESTAURANT_NOT_FOUND, thrown.getErrorCode());
   }
 
   @DisplayName("memberAccount에 해당하는 멤버가 존재하지 않는 경우")

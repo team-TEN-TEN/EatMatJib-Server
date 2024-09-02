@@ -99,7 +99,7 @@ class ReviewControllerTest {
         .score(5)
         .build();
 
-    doThrow(new BusinessException(ErrorCode.RESTAURANT_NOT_FOUNT))
+    doThrow(new BusinessException(ErrorCode.RESTAURANT_NOT_FOUND))
         .when(addReviewService).addReviewAndUpdateRating(reviewRequest);
 
     // When & Then
