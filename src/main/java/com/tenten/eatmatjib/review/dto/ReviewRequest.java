@@ -1,11 +1,12 @@
 package com.tenten.eatmatjib.review.dto;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
+@EqualsAndHashCode
 public class ReviewRequest {
-
 
     private String content; // 리뷰 내용
     private int score;      // 평점

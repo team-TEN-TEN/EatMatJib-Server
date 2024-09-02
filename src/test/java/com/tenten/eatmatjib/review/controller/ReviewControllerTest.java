@@ -3,6 +3,7 @@ package com.tenten.eatmatjib.review.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tenten.eatmatjib.common.exception.BusinessException;
 import com.tenten.eatmatjib.common.exception.ErrorCode;
+import com.tenten.eatmatjib.common.exception.GlobalExceptionHandler;
 import com.tenten.eatmatjib.review.dto.ReviewRequest;
 import com.tenten.eatmatjib.review.service.AddReviewService;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.filter.CharacterEncodingFilter;
+
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,7 +41,9 @@ class ReviewControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(reviewController)
-                .setMessageConverters(new MappingJackson2HttpMessageConverter()) // Jackson converter 추가
+                .setControllerAdvice(GlobalExceptionHandler.class)
+                .setMessageConverters(
+                        new MappingJackson2HttpMessageConverter()) // Jackson converter 추가
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))
                 .build();
     }
@@ -109,7 +113,4 @@ class ReviewControllerTest {
                         .content(new ObjectMapper().writeValueAsString(reviewRequest)))
                 .andExpect(status().isNotFound());
     }
-
-
 }
-
