@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,12 +20,24 @@ public class Region {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String siDo;
+    @Column(nullable = false, columnDefinition = "시-도")
+    private String city;
 
-    @Column(nullable = false)
-    private String sgg;
+    @Column(nullable = false, columnDefinition = "시군구")
+    private String district;
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    public void update(String city, String district) {
+        this.city = city;
+        this.district = district;
+    }
+
+    @Builder
+    public Region(String city, String district) {
+        this.city = city;
+        this.district = district;
+        this.updatedAt = LocalDateTime.now();
+    }
 }
