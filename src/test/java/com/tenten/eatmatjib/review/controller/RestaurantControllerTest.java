@@ -57,7 +57,7 @@ class ReviewControllerTest {
     doNothing().when(addReviewService).addReviewAndUpdateRating(any(ReviewRequest.class));
 
     // When & Then
-    mockMvc.perform(post("/api/v1/review")
+    mockMvc.perform(post("/api/v1/reviews")
             .contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content(new ObjectMapper().writeValueAsString(reviewRequest)))
