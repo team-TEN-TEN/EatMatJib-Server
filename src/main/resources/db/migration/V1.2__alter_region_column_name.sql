@@ -1,0 +1,5 @@
+ALTER TABLE region
+    CHANGE COLUMN si_do city VARCHAR(255) NOT NULL;
+
+ALTER TABLE region
+    CHANGE COLUMN sgg district VARCHAR(255) NOT NULL;
