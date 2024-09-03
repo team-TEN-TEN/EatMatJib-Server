@@ -47,7 +47,7 @@ JaCoCo를 활용해 코드 커버리지를 측정했습니다.
 
 ## API Reference
 
-[API 명세서 (Swagger)]()
+[API 명세서 (Swagger)](http://43.202.246.107:9010/swagger-ui/index.html#/)
 
 <details>
 <summary>사용자 회원가입 API</summary>
