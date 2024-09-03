@@ -6,3 +6,9 @@ spring:
     username: ${RDS_USERNAME}
     password: ${RDS_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+custom:
+  file:
+    csv:
+      region:
+        path: /sgg_lat_lon.csv
