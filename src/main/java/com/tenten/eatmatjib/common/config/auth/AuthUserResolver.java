@@ -1,9 +1,9 @@
 package com.tenten.eatmatjib.common.config.auth;
 
-import static com.tenten.eatmatjib.common.exception.ErrorCode.*;
+import static com.tenten.eatmatjib.common.exception.ErrorCode.INVALID_TOKEN_UNAUTHORIZED;
+import static com.tenten.eatmatjib.common.exception.ErrorCode.LOGIN_UNAUTHORIZED;
 
 import com.tenten.eatmatjib.common.exception.BusinessException;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -21,14 +21,14 @@ public class AuthUserResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         boolean hasAnnotation = parameter.hasParameterAnnotation(AuthUser.class);
-        boolean isString = parameter.getParameterType().equals(String.class);
+        boolean isLong = parameter.getParameterType().equals(Long.class);
 
-        return hasAnnotation && isString;
+        return hasAnnotation && isLong;
     }
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-            NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+        NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         String bearerToken = webRequest.getHeader("Authorization");
 
         if (bearerToken == null || bearerToken.isEmpty()) {
@@ -40,8 +40,6 @@ public class AuthUserResolver implements HandlerMethodArgumentResolver {
             throw new BusinessException(INVALID_TOKEN_UNAUTHORIZED);
         }
 
-        String memberId = jwtUtil.getMemberId(token);
-
-        return memberId;
+        return jwtUtil.getMemberId(token);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class CoordinateConverterConfig {
+
     private static final String SOURCE_COORDINATE_SYSTEM = "epsg:4326";
     private static final String TARGET_COORDINATE_SYSTEM = "epsg:2097";
 

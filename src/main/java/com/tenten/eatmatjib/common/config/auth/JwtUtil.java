@@ -1,6 +1,5 @@
 package com.tenten.eatmatjib.common.config.auth;
 
-import com.tenten.eatmatjib.member.domain.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -38,14 +37,14 @@ public class JwtUtil {
         this.refreshTokenExpTime = refreshTokenExpTime;
     }
 
-    public JwtToken createToken(Member member) {
+    public JwtToken createToken(Long memberId) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("id", member.getId());
+        claims.put("id", memberId);
 
         Instant now = Instant.now();
 
         String accessToken = Jwts.builder()
-                .subject(member.getId())
+                .subject(String.valueOf(memberId))
                 .claims(claims)
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plusSeconds(accessTokenExpTime)))
@@ -80,8 +79,8 @@ public class JwtUtil {
         return false;
     }
 
-    public String getMemberId(String token) {
-        return parseClaims(token).get("id", String.class);
+    public Long getMemberId(String token) {
+        return parseClaims(token).get("id", Long.class);
     }
 
     public Claims parseClaims(String token) {

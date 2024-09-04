@@ -13,9 +13,9 @@ public class RandomCodeUtil {
         StringBuilder stringBuilder = new StringBuilder();
 
         random.ints(ORIGIN, BOUND + 1)
-            .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-            .limit(LENGTH)
-            .forEach(stringBuilder::appendCodePoint);
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(LENGTH)
+                .forEach(stringBuilder::appendCodePoint);
 
         return stringBuilder.toString();
     }

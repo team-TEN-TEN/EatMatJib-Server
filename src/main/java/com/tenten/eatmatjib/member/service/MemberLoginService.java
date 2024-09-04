@@ -26,7 +26,7 @@ public class MemberLoginService {
     @Transactional
     public LoginMemberRes execute(LoginMemberReq request) {
         Member member = findMember(request);
-        JwtToken token = jwtUtil.createToken(member);
+        JwtToken token = jwtUtil.createToken(member.getId());
 
         return LoginMemberRes.of(member, token);
     }

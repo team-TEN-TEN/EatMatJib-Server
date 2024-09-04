@@ -24,6 +24,12 @@ public class GlobalExceptionHandler {
     private static final String ERROR_LOG_MESSAGE = "[ERROR] {} : {}";
     private static final String WARN_LOG_MESSAGE = "[WARN] {} : {}";
 
+    @ExceptionHandler(FileNotFoundException.class)
+    protected void handleFileNotFoundException(final FileNotFoundException e) {
+        log.error(ERROR_LOG_MESSAGE, e.getClass().getSimpleName(), e.getDetail());
+        e.printStackTrace();
+    }
+
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponse<Void>> handleBusinessException(
             final BusinessException e) {
@@ -43,7 +49,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BindException.class)
-    protected ResponseEntity<ErrorResponse<List<String>>> handleBindException(final BindException e) {
+    protected ResponseEntity<ErrorResponse<List<String>>> handleBindException(
+            final BindException e) {
         log.warn(ERROR_LOG_MESSAGE, e.getClass().getSimpleName(), e.getMessage());
 
         List<String> details = e.getFieldErrors().stream()
@@ -54,7 +61,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<ErrorResponse<List<String>>> handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
+    protected ResponseEntity<ErrorResponse<List<String>>> handleMethodArgumentNotValidException(
+            final MethodArgumentNotValidException e) {
         log.warn(ERROR_LOG_MESSAGE, e.getClass().getSimpleName(), e.getMessage());
 
         List<String> details = e.getFieldErrors().stream()
@@ -65,7 +73,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HandlerMethodValidationException.class)
-    protected ResponseEntity<ErrorResponse<List<String>>> handleHandlerMethodValidationException(final HandlerMethodValidationException e) {
+    protected ResponseEntity<ErrorResponse<List<String>>> handleHandlerMethodValidationException(
+            final HandlerMethodValidationException e) {
         log.warn(ERROR_LOG_MESSAGE, e.getClass().getSimpleName(), e.getMessage());
 
         List<String> detail = e.getAllErrors().stream()
@@ -76,7 +85,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    protected ResponseEntity<ErrorResponse<List<String>>> handleConstraintViolationException(final ConstraintViolationException e) {
+    protected ResponseEntity<ErrorResponse<List<String>>> handleConstraintViolationException(
+            final ConstraintViolationException e) {
         log.warn(ERROR_LOG_MESSAGE, e.getClass().getSimpleName(), e.getMessage());
 
         List<String> details = e.getConstraintViolations().stream()
@@ -108,7 +118,8 @@ public class GlobalExceptionHandler {
             ServletRequestBindingException.class,
             MissingServletRequestParameterException.class,
     })
-    protected ResponseEntity<ErrorResponse<Void>> handleMissingParameterException(final Exception e) {
+    protected ResponseEntity<ErrorResponse<Void>> handleMissingParameterException(
+            final Exception e) {
         log.warn(ERROR_LOG_MESSAGE, e.getClass().getSimpleName(), e.getMessage());
 
         return ErrorResponse.toResponseEntity(ErrorCode.MISSING_PARAMETER_EXCEPTION);
